@@ -73,6 +73,29 @@ class App extends Component {
     }));
   };
 
+  componentDidMount() {
+    //получаем данные с LS при создании компонента
+    const savedContacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(savedContacts);
+
+    // делаем проверку на null и перезаписываем state
+    if (parsedContacts) {
+      this.setState({
+        contacts: parsedContacts,
+      });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    // console.log('Текущее состояние ', prevState);
+    // console.log('Начальное состояние ', this.state);
+
+    //делаем проверку на неравенство данных перед сохранением в LS
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const { contacts, filter } = this.state; // деструкт свойств обекта state
 
